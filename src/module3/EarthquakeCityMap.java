@@ -2,6 +2,7 @@ package module3;
 
 //Java utilities libraries
 import java.util.ArrayList;
+
 //import java.util.Collections;
 //import java.util.Comparator;
 import java.util.List;
@@ -14,6 +15,7 @@ import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.data.PointFeature;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
+import de.fhpotsdam.unfolding.providers.EsriProvider;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
 import de.fhpotsdam.unfolding.utils.MapUtils;
@@ -58,12 +60,12 @@ public class EarthquakeCityMap extends PApplet {
 		    earthquakesURL = "2.5_week.atom"; 	// Same feed, saved Aug 7, 2015, for working offline
 		}
 		else {
-			map = new UnfoldingMap(this, 200, 50, 700, 500, new Google.GoogleMapProvider());
+			map = new UnfoldingMap(this, 200, 50, 1200, 1000, new EsriProvider.WorldPhysical());
 			// IF YOU WANT TO TEST WITH A LOCAL FILE, uncomment the next line
-			//earthquakesURL = "2.5_week.atom";
+			earthquakesURL = "2.5_week.atom";
 		}
 		
-	    map.zoomToLevel(2);
+	    map.zoomToLevel(4);
 	    MapUtils.createDefaultEventDispatcher(this, map);	
 			
 	    // The List you will populate with new SimplePointMarkers
@@ -77,8 +79,24 @@ public class EarthquakeCityMap extends PApplet {
 	    // to create a new SimplePointMarker for each PointFeature in 
 	    // earthquakes.  Then add each new SimplePointMarker to the 
 	    // List markers (so that it will be added to the map in the line below)
+	    for(PointFeature eq : earthquakes) {
+		    	markers.add(new SimplePointMarker(eq.getLocation(), eq.getProperties()));
+		    	
+		    }
 	    
-	    
+	    for(Marker mk : markers) {
+	    	if((float) mk.getProperty("magnitude") < 4.0) {
+	    	    mk.setColor(color(0, 0, 255));	
+	    	    
+	    	}else if((float) mk.getProperty("magnitude") >= 4.0 & (float) mk.getProperty("magnitude") <= 4.9) {
+	    		mk.setColor(color(255, 255, 0));
+	    		((SimplePointMarker) mk).setRadius(13);
+	    	}else {
+	    		mk.setColor(color(255, 0, 0));
+	    		((SimplePointMarker) mk).setRadius(16);
+	    	}
+	    }
+	 
 	    // Add the markers to the map so that they are displayed
 	    map.addMarkers(markers);
 	}
