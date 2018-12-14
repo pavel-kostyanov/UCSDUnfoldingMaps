@@ -116,6 +116,9 @@ public class EarthquakeCityMap extends PApplet {
 	    // (3) Add markers to map
 	    //     NOTE: Country markers are not added to the map.  They are used
 	    //           for their geometric properties
+	    // for (Marker i : quakeMarkers) {
+	    // System.out.println(i.getProperties());
+	    // }
 	    map.addMarkers(quakeMarkers);
 	    map.addMarkers(cityMarkers);
 	    
@@ -170,7 +173,9 @@ public class EarthquakeCityMap extends PApplet {
 		// If isInCountry ever returns true, isLand should return true.
 		for (Marker m : countryMarkers) {
 			// TODO: Finish this method using the helper method isInCountry
-			
+			if(isInCountry(earthquake, m)) {
+				return true;
+			}
 		}
 		
 		
@@ -197,7 +202,15 @@ public class EarthquakeCityMap extends PApplet {
 		//     	and (2) if it is on land, that its country property matches 
 		//      the name property of the country marker.   If so, increment
 		//      the country's counter.
-		
+		for (Marker cm : countryMarkers) { 
+			int quakeCounter = 0;
+			for(Marker qm : quakeMarkers) {
+				if((Boolean)qm.getProperty("country") & (String)cm.getProperty("name") == (String)qm.getProperty("country")) {
+					quakeCounter++; 
+				}
+				System.out.println(quakeCounter);
+			}
+		}
 		// Here is some code you will find useful:
 		// 
 		//  * To get the name of a country from a country marker in variable cm, use:

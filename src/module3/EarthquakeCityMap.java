@@ -9,7 +9,7 @@ import java.util.List;
 
 //Processing library
 import processing.core.PApplet;
-
+import processing.core.PFont;
 //Unfolding libraries
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.marker.Marker;
@@ -53,19 +53,20 @@ public class EarthquakeCityMap extends PApplet {
 
 	
 	public void setup() {
-		size(950, 600, OPENGL);
+		size(1200, 900, OPENGL);
+		
 
 		if (offline) {
-		    map = new UnfoldingMap(this, 200, 50, 700, 500, new MBTilesMapProvider(mbTilesString));
+		    map = new UnfoldingMap(this, 250, 50, 700, 500, new MBTilesMapProvider(mbTilesString));
 		    earthquakesURL = "2.5_week.atom"; 	// Same feed, saved Aug 7, 2015, for working offline
 		}
 		else {
-			map = new UnfoldingMap(this, 200, 50, 1200, 1000, new EsriProvider.WorldPhysical());
+			map = new UnfoldingMap(this, 250, 50, 900, 600, new EsriProvider.WorldPhysical());
 			// IF YOU WANT TO TEST WITH A LOCAL FILE, uncomment the next line
 			earthquakesURL = "2.5_week.atom";
 		}
 		
-	    map.zoomToLevel(4);
+	    map.zoomToLevel(2);
 	    MapUtils.createDefaultEventDispatcher(this, map);	
 			
 	    // The List you will populate with new SimplePointMarkers
@@ -85,10 +86,10 @@ public class EarthquakeCityMap extends PApplet {
 		    }
 	    
 	    for(Marker mk : markers) {
-	    	if((float) mk.getProperty("magnitude") < 4.0) {
+	    	if((float) mk.getProperty("magnitude") < THRESHOLD_LIGHT) {
 	    	    mk.setColor(color(0, 0, 255));	
 	    	    
-	    	}else if((float) mk.getProperty("magnitude") >= 4.0 & (float) mk.getProperty("magnitude") <= 4.9) {
+	    	}else if((float) mk.getProperty("magnitude") >= THRESHOLD_LIGHT & (float) mk.getProperty("magnitude") < THRESHOLD_MODERATE) {
 	    		mk.setColor(color(255, 255, 0));
 	    		((SimplePointMarker) mk).setRadius(13);
 	    	}else {
@@ -142,6 +143,7 @@ public class EarthquakeCityMap extends PApplet {
 	
 	public void draw() {
 	    background(10);
+	    
 	    map.draw();
 	    addKey();
 	}
@@ -152,6 +154,22 @@ public class EarthquakeCityMap extends PApplet {
 	private void addKey() 
 	{	
 		// Remember you can use Processing's graphics methods here
+		fill(255, 255, 255);
+		rect(20, 50, 200, 500);
+		PFont myFont = createFont("Arial", 13);
+		fill(0, 0, 0);
+		textFont(myFont);
+		text("Earthquake Key", 70, 90);
+		text("5.0+ Magnitude", 90, 150);
+		text("4.0+ Magnitude", 90, 190);
+		text("Below 4.0", 90, 230);
+		fill(255,0,0);
+		ellipse(50, 145, 15, 15);
+		fill(255,255,0);
+		ellipse(50, 185, 13, 13);
+		fill(0,0,255);
+		ellipse(50, 225, 9, 9);
 	
+		
 	}
 }
