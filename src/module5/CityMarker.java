@@ -52,6 +52,19 @@ public class CityMarker extends CommonMarker {
 	{
 		
 		// TODO: Implement this method
+		int fontSize = 12;
+		String city = getCity();
+		String country = getCountry();
+		Float population = getPopulation();
+		String string = " " + city + ", " + country + ", " + population + " ";
+		Float textWidth = pg.textWidth(string); 
+		pg.fill(255,255,255,150);
+		pg.rect(x + radius * 3/2, y - radius - 3, textWidth, fontSize + 2);
+		pg.textSize(fontSize);
+		
+		pg.fill(0);
+		pg.text(string, x + radius * 3/2, y);
+		
 	}
 	
 	
