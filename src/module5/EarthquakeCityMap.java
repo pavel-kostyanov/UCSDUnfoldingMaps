@@ -163,12 +163,44 @@ public class EarthquakeCityMap extends PApplet {
 	 * where the city is in the threat circle
 	 */
 	@Override
-	public void mouseClicked()
-	{
+	public void mouseClicked(){
+		System.out.println(mouseX + " - "+ mouseY);
 		// TODO: Implement this method
 		// Hint: You probably want a helper method or two to keep this code
 		// from getting too long/disorganized
+		if(lastClicked != null) {
+			lastClicked.setClicked(false);
+			lastClicked = null;
+			
+		}
+		selectMarkerIfClicked(quakeMarkers);
+		// selectMarkerIfClicked(cityMarkers);
+		
 	}
+	
+	private void selectMarkerIfClicked(List<Marker> markers) {
+		
+		for(Marker mk : markers) {			
+			if(mk.isInside(map, mouseX, mouseY) && lastClicked == null) {				
+				mk.setSelected(true);
+				lastClicked = (CommonMarker) mk;
+				for(Marker m : markers) {
+					if((m.getId()).equals(lastClicked.getId())) {
+						continue;
+					}else {
+						
+						m.setHidden(true);
+						}
+			    }
+			}else {
+				unhideMarkers();
+			}
+		}
+		
+	}
+	
+		
+	
 	
 	
 	// loop over and unhide all markers
