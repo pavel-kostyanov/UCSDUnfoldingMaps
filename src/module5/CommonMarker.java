@@ -1,6 +1,7 @@
 package module5;
 
 import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import processing.core.PGraphics;
 
@@ -31,6 +32,10 @@ public abstract class CommonMarker extends SimplePointMarker {
 	// Setter method for clicked field
 	public void setClicked(boolean state) {
 		clicked = state;
+	}
+	
+	public String getId(Marker mk) {
+		return mk.getId();
 	}
 	
 	// Common piece of drawing method for markers; 

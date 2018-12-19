@@ -92,15 +92,18 @@ public class EarthquakeCityMap extends PApplet {
 		//     STEP 3: read in earthquake RSS feed
 	    List<PointFeature> earthquakes = ParseFeed.parseEarthquake(this, earthquakesURL);
 	    quakeMarkers = new ArrayList<Marker>();
-	    
+	    int counter = 1;	
 	    for(PointFeature feature : earthquakes) {
 		  //check if LandQuake
+	      
 		  if(isLand(feature)) {
-		    quakeMarkers.add(new LandQuakeMarker(feature));
+			quakeMarkers.add(new LandQuakeMarker(feature, counter));
+		    counter++;
 		  }
 		  // OceanQuakes
 		  else {
-		    quakeMarkers.add(new OceanQuakeMarker(feature));
+		    quakeMarkers.add(new OceanQuakeMarker(feature, counter));
+		    counter++;
 		  }
 	    }
 
@@ -147,7 +150,7 @@ public class EarthquakeCityMap extends PApplet {
 	{
 		// TODO: Implement this method
 	  
-		for (Marker mk : markers) {
+		for (Marker mk : markers) {			
 			if(mk.isInside(map, mouseX, mouseY) && lastSelected == null) {
 				mk.setSelected(true);
 				lastSelected = (CommonMarker) mk;
@@ -164,7 +167,6 @@ public class EarthquakeCityMap extends PApplet {
 	 */
 	@Override
 	public void mouseClicked(){
-		System.out.println(mouseX + " - "+ mouseY);
 		// TODO: Implement this method
 		// Hint: You probably want a helper method or two to keep this code
 		// from getting too long/disorganized
@@ -180,23 +182,32 @@ public class EarthquakeCityMap extends PApplet {
 	
 	private void selectMarkerIfClicked(List<Marker> markers) {
 		
-		for(Marker mk : markers) {			
-			if(mk.isInside(map, mouseX, mouseY) && lastClicked == null) {				
-				mk.setSelected(true);
-				lastClicked = (CommonMarker) mk;
-				for(Marker m : markers) {
-					if((m.getId()).equals(lastClicked.getId())) {
-						continue;
-					}else {
-						
-						m.setHidden(true);
-						}
-			    }
-			}else {
-				unhideMarkers();
-			}
+		if(lastClicked == null){
+			unhideMarkers();			
 		}
 		
+		System.out.println("test");
+		for(Marker mk : markers) {	
+			
+			if(mk.isInside(map, mouseX, mouseY) && lastClicked == null) {		
+				mk.setSelected(true);				
+				lastClicked = (CommonMarker) mk;
+				for(Marker m : markers) {
+					
+					if(m.getId().equals(lastClicked.getId())) {
+						for(Marker city : cityMarkers) {
+							if(m.getDistanceTo(city.getLocation()) <= ((EarthquakeMarker) m).threatCircle()) {
+								continue;
+							}else{						
+								city.setHidden(true);
+							}	
+					     }
+			}else {							
+				m.setHidden(true);
+				  }
+			   }					
+			}			
+		}		
 	}
 	
 		

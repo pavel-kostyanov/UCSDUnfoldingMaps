@@ -67,6 +67,26 @@ public class CityMarker extends CommonMarker {
 		
 	}
 	
+	/*
+	 private void checkCitiesForClick()
+{
+    if (lastClicked != null) 
+        return;
+    for (Marker marker : cityMarkers) 
+    {
+        if (!marker.isHidden() &&
+            marker.isInside(map, mouseX, mouseY) &&
+            lastClicked == null)
+        {
+            lastClicked = (CommonMarker)marker;
+        }
+        else {
+            marker.setHidden(true);
+        }
+    }
+   
+}
+	 */
 	
 	
 	/* Local getters for some city properties.  

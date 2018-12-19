@@ -11,11 +11,12 @@ import processing.core.PGraphics;
  */
 public class OceanQuakeMarker extends EarthquakeMarker {
 	
-	public OceanQuakeMarker(PointFeature quake) {
+	public OceanQuakeMarker(PointFeature quake, Integer markerId) {
 		super(quake);
 		
 		// setting field in earthquake marker
 		isOnLand = false;
+		this.id = Integer.toString(markerId);
 	}
 	
 

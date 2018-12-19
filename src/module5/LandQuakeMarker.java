@@ -12,13 +12,14 @@ import processing.core.PGraphics;
 public class LandQuakeMarker extends EarthquakeMarker {
 	
 	
-	public LandQuakeMarker(PointFeature quake) {
+	public LandQuakeMarker(PointFeature quake, Integer markerId) {
 		
 		// calling EarthquakeMarker constructor
 		super(quake);
 		
 		// setting field in earthquake marker
 		isOnLand = true;
+		this.id = Integer.toString(markerId);
 	}
 
 
