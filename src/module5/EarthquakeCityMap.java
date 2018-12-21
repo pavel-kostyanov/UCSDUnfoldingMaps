@@ -206,7 +206,7 @@ public class EarthquakeCityMap extends PApplet {
 				m.setHidden(true);
 				  }
 			   }					
-			}			
+		   }			
 		}		
 	}
 	
