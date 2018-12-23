@@ -1,8 +1,9 @@
 package module6;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+//import java.util.Arrays;
+//import java.util.Collections;
+//import java.util.List;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.data.Feature;
@@ -107,7 +108,7 @@ public class EarthquakeCityMap extends PApplet {
 	    for(PointFeature feature : earthquakes) {
 		  //check if LandQuake
 		  if(isLand(feature)) {
-		    quakeMarkers.add(new LandQuakeMarker(feature));
+			quakeMarkers.add(new LandQuakeMarker(feature));
 		  }
 		  // OceanQuakes
 		  else {
@@ -117,6 +118,8 @@ public class EarthquakeCityMap extends PApplet {
 
 	    // could be used for debugging
 	    printQuakes();
+	    sortAndPrint(20);
+	    
 	 		
 	    // (3) Add markers to map
 	    //     NOTE: Country markers are not added to the map.  They are used
@@ -136,11 +139,15 @@ public class EarthquakeCityMap extends PApplet {
 	}
 	
 	
+	
 	// TODO: Add the method:
 	//   private void sortAndPrint(int numToPrint)
 	// and then call that method from setUp
 	 private void sortAndPrint(int numToPrint) {
-		 Marker[] sortedMarkers;
+		 
+		 Object[] sortedMarkers = new Object[quakeMarkers.size()];
+		 quakeMarkers.toArray(sortedMarkers);
+		 Collections.sort((EarthquakeMarker) quakeMarkers);
 		 
 	 }
 	
