@@ -118,7 +118,7 @@ public class EarthquakeCityMap extends PApplet {
 
 	    // could be used for debugging
 	    printQuakes();
-	    sortAndPrint(20);
+	    sortAndPrint(327);
 	    
 	 		
 	    // (3) Add markers to map
@@ -145,9 +145,19 @@ public class EarthquakeCityMap extends PApplet {
 	// and then call that method from setUp
 	 private void sortAndPrint(int numToPrint) {
 		 
-		 Object[] sortedMarkers = new Object[quakeMarkers.size()];
+		 EarthquakeMarker sortedMarkers[] = new EarthquakeMarker[quakeMarkers.size()];
 		 quakeMarkers.toArray(sortedMarkers);
-		 Collections.sort((EarthquakeMarker) quakeMarkers);
+		 Arrays.sort(sortedMarkers);
+		 System.out.println(sortedMarkers.length);
+		 if(numToPrint >= sortedMarkers.length) {
+			 for(int counter = 0; counter < sortedMarkers.length; counter++) {
+				 System.out.println(" " + (counter + 1) + "). - " + sortedMarkers[counter]);
+			 }
+		 }else {
+			 for(int counter = 0; counter < numToPrint; counter++) {
+				 System.out.println(" " + (counter + 1) + " ). - " + sortedMarkers[counter]); 
+			 }
+		 }		
 		 
 	 }
 	
