@@ -41,16 +41,13 @@ public class EarthquakeCityMap extends PApplet {
 	
 	/** This is where to find the local tiles, for working without an Internet connection */
 	public static String mbTilesString = "blankLight-1-3.mbtiles";
-	
-	
+
+
 
 	//feed with magnitude 2.5+ Earthquakes
 	private String earthquakesURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.atom";
 	
-	// The files containing city names and info and country names and info
-	private String cityFile = "city-data.json";
-	private String countryFile = "countries.geo.json";
-	
+
 	// The map
 	private UnfoldingMap map;
 	
@@ -66,7 +63,15 @@ public class EarthquakeCityMap extends PApplet {
 	private CommonMarker lastSelected;
 	private CommonMarker lastClicked;
 	
-	public void setup() {		
+	public void setup() {
+
+		// The files containing city names and info and country names and info
+		String cityFile = "city-data.json";
+		String countryFile = "countries.geo.json";
+
+		// This is number of sorted earthquakes to print
+		int numSortToPrint = 327;
+
 		// (1) Initializing canvas and map tiles
 		size(900, 700, OPENGL);
 		if (offline) {
@@ -118,7 +123,7 @@ public class EarthquakeCityMap extends PApplet {
 
 	    // could be used for debugging
 	    printQuakes();
-	    sortAndPrint(327);
+	    sortAndPrint(numSortToPrint);
 	    
 	 		
 	    // (3) Add markers to map
@@ -145,7 +150,7 @@ public class EarthquakeCityMap extends PApplet {
 	// and then call that method from setUp
 	 private void sortAndPrint(int numToPrint) {
 		 
-		 EarthquakeMarker sortedMarkers[] = new EarthquakeMarker[quakeMarkers.size()];
+		 EarthquakeMarker[] sortedMarkers = new EarthquakeMarker[quakeMarkers.size()];
 		 quakeMarkers.toArray(sortedMarkers);
 		 Arrays.sort(sortedMarkers);
 		 System.out.println(sortedMarkers.length);
@@ -208,9 +213,7 @@ public class EarthquakeCityMap extends PApplet {
 		if (lastClicked != null) {
 			unhideMarkers();
 			lastClicked = null;
-		}
-		else if (lastClicked == null) 
-		{
+		}else{
 			checkEarthquakesForClick();
 			if (lastClicked == null) {
 				checkCitiesForClick();
