@@ -1,7 +1,9 @@
 package module5;
 
 import de.fhpotsdam.unfolding.data.PointFeature;
+import de.fhpotsdam.unfolding.marker.Marker;
 import processing.core.PGraphics;
+import java.util.List;
 
 /** Implements a visual marker for earthquakes on an earthquake map
  * 
@@ -34,6 +36,10 @@ public abstract class EarthquakeMarker extends CommonMarker
 	public static final float THRESHOLD_INTERMEDIATE = 70;
 	/** Greater than or equal to this threshold is a deep depth */
 	public static final float THRESHOLD_DEEP = 300;
+	
+
+	// threatenedCityMarkers
+    List<Marker> threatenedCityMarkers;
 
 	// ADD constants for colors if you want
 
@@ -83,6 +89,8 @@ public abstract class EarthquakeMarker extends CommonMarker
 					y-(radius+buffer));
 			
 		}
+		
+		
 		
 		// reset to previous styling
 		pg.popStyle();
@@ -162,7 +170,7 @@ public abstract class EarthquakeMarker extends CommonMarker
 		return isOnLand;
 	}
 	
-
+	
 	
 	
 }

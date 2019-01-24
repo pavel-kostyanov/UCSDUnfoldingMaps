@@ -11,11 +11,15 @@ import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.marker.AbstractShapeMarker;
 import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.marker.MultiMarker;
+import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import de.fhpotsdam.unfolding.providers.*;
 // import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
 import de.fhpotsdam.unfolding.utils.MapUtils;
+import de.fhpotsdam.unfolding.utils.ScreenPosition;
+import processing.core.PVector;
 import parsing.ParseFeed;
 import processing.core.PApplet;
+import processing.core.PGraphics;
 
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
@@ -23,7 +27,7 @@ import processing.core.PApplet;
  * @author Your name here
  * Date: July 17, 2015
  * */
-public class EarthquakeCityMap extends PApplet {
+public class EarthquakeCityMap extends PApplet{
 	
 	// We will use member variables, instead of local variables, to store the data
 	// that the setup and draw methods will need to access (as well as other methods)
@@ -51,7 +55,7 @@ public class EarthquakeCityMap extends PApplet {
 	private UnfoldingMap map;
 	
 	// Markers for each city
-	private List<Marker> cityMarkers;
+	private static List<Marker> cityMarkers;
 	// Markers for each earthquake
 	private List<Marker> quakeMarkers;
 
@@ -61,16 +65,26 @@ public class EarthquakeCityMap extends PApplet {
 	// NEW IN MODULE 5
 	private CommonMarker lastSelected;
 	private CommonMarker lastClicked;
+	private ScreenPosition posQuake;
+	private ScreenPosition cityQuake;
+	
+	public static List<Marker> getCityMarkers() {
+		return cityMarkers;
+	}
+	
+	public static void main(String[] args) {
+        PApplet.main("module5.EarthquakeCityMap");
+    }
 	
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
-		size(900, 700, OPENGL);
+		size(1200, 1000, OPENGL);
 		if (offline) {
 		    map = new UnfoldingMap(this, 200, 50, 650, 600, new EsriProvider.WorldPhysical());
 		    earthquakesURL = "2.5_week.atom";  // The same feed, but saved August 7, 2015
 		}
 		else {
-			map = new UnfoldingMap(this, 200, 50, 650, 600, new EsriProvider.WorldPhysical());
+			map = new UnfoldingMap(this, 200, 50, 900, 700, new EsriProvider.WorldPhysical());
 			// IF YOU WANT TO TEST WITH A LOCAL FILE, uncomment the next line
 		    //earthquakesURL = "2.5_week.atom";
 		}
@@ -122,8 +136,7 @@ public class EarthquakeCityMap extends PApplet {
 	public void draw() {
 		background(0);
 		map.draw();
-		addKey();
-		
+		addKey();		
 	}
 	
 	/** Event handler that gets called automatically when the 
@@ -186,18 +199,24 @@ public class EarthquakeCityMap extends PApplet {
 			unhideMarkers();			
 		}
 		
-		System.out.println("test");
+		
 		for(Marker mk : markers) {	
 			
 			if(mk.isInside(map, mouseX, mouseY) && lastClicked == null) {		
-				mk.setSelected(true);				
+				mk.setSelected(true);
+				((CommonMarker) mk).setClicked(true);
 				lastClicked = (CommonMarker) mk;
 				for(Marker m : markers) {
 					
 					if(m.getId().equals(lastClicked.getId())) {
 						for(Marker city : cityMarkers) {
 							if(m.getDistanceTo(city.getLocation()) <= ((EarthquakeMarker) m).threatCircle()) {
-								continue;
+								if(((EarthquakeMarker) m).isOnLand() == false) {
+								posQuake = ((SimplePointMarker) m).getScreenPosition(map);
+								cityQuake = ((SimplePointMarker) m).getScreenPosition(map);
+								
+								}
+							continue;
 							}else{						
 								city.setHidden(true);
 							}	

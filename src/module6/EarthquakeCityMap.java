@@ -63,6 +63,11 @@ public class EarthquakeCityMap extends PApplet {
 	private CommonMarker lastSelected;
 	private CommonMarker lastClicked;
 	
+	public static void main(String[] args) {
+        PApplet.main("module6.EarthquakeCityMap");
+    }
+	
+	
 	public void setup() {
 
 		// The files containing city names and info and country names and info
